@@ -1,0 +1,49 @@
+{
+  "manifest_version": 2,
+  "name": "KeePass Launcher",
+  "version": "0.1.0",
+  "description": "Unlock a KeePass database and open its sites in a private window, signed in.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "keepass-launcher@local",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"]
+      }
+    }
+  },
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+  "permissions": [
+    "nativeMessaging",
+    "clipboardWrite",
+    "storage",
+    "tabs",
+    "webNavigation",
+    "<all_urls>"
+  ],
+  "background": {
+    "scripts": [
+      "vendor/argon2.umd.min.js",
+      "vendor/kdbxweb.min.js",
+      "vendor/tldts.umd.min.js",
+      "background/native.js",
+      "background/kdbx.js",
+      "background/main.js"
+    ],
+    "persistent": true
+  },
+  "browser_action": {
+    "default_title": "KeePass Launcher",
+    "default_icon": "icons/icon.svg",
+    "default_popup": "ui/popup.html"
+  },
+  "options_ui": {
+    "page": "ui/options.html",
+    "open_in_tab": false
+  },
+  "incognito": "spanning",
+  "content_security_policy": "script-src 'self' 'wasm-unsafe-eval'; object-src 'self'"
+}

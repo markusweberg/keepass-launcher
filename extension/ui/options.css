@@ -1,0 +1,19 @@
+body {
+  padding-block: 12px;
+  padding-inline: 16px;
+  max-width: 560px;
+}
+
+.field {
+  margin-bottom: 14px;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+code {
+  font-size: 12px;
+}

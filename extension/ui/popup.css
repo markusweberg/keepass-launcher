@@ -1,0 +1,103 @@
+body {
+  width: 340px;
+  padding: 14px 16px 12px;
+}
+
+header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+h1 {
+  font-size: 14px;
+  margin: 0;
+}
+
+p {
+  margin: 0 0 10px;
+}
+
+button.wide {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.entries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 260px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+.entry:last-child {
+  border-bottom: none;
+}
+
+.entry.match {
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+
+.entry-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.entry-title {
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.entry-username {
+  align-self: flex-start;
+  max-width: 100%;
+  padding: 0;
+  border: none;
+  color: var(--accent);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.entry-username:disabled {
+  color: var(--muted);
+}
+
+.entry-password {
+  flex-shrink: 0;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.entries-hint {
+  margin-bottom: 10px;
+}
+
+.stack {
+  display: grid;
+  gap: 8px;
+}
+
+footer {
+  margin-top: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+}

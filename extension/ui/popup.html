@@ -1,0 +1,49 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="common.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <img src="../icons/icon.svg" alt="" width="20" height="20">
+    <h1>KeePass Launcher</h1>
+  </header>
+
+  <section id="view-setup" hidden>
+    <p>Set the path to your KeePass database before the first launch.</p>
+    <button type="button" class="primary open-settings">Open settings</button>
+  </section>
+
+  <section id="view-private" hidden>
+    <p>Firefox has to allow this extension in private windows. Turn on <b>Run in Private Windows</b> in the extension settings.</p>
+    <button type="button" class="primary open-settings">Open settings</button>
+  </section>
+
+  <form id="view-unlock" hidden>
+    <label for="password">Master password</label>
+    <input id="password" type="password" autocomplete="off" spellcheck="false" required>
+    <button id="unlock" type="submit" class="primary wide">Unlock &amp; open tabs</button>
+    <p id="unlock-error" class="error" role="alert" hidden></p>
+    <p class="hint">Opens the entries in group <b id="group-name"></b> in a private window.</p>
+  </form>
+
+  <section id="view-session" hidden>
+    <p><b id="tab-count"></b> tabs open in the private session.</p>
+    <ul id="entries" class="entries"></ul>
+    <p class="hint entries-hint">Click a username to copy it. A copied password is cleared from the clipboard after 30 seconds.</p>
+    <div class="stack">
+      <button id="refill" type="button">Fill login on current tab</button>
+      <button id="close-session" type="button" class="danger">Close session</button>
+    </div>
+    <p id="session-message" role="status" hidden></p>
+  </section>
+
+  <footer>
+    <a href="#" class="open-settings">Settings</a>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>
