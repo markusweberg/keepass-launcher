@@ -4,7 +4,7 @@
 $ErrorActionPreference = 'Stop'
 
 $hostName = 'keepass_launcher'
-$extensionId = 'keepass-launcher@local'
+$extensionId = 'keepass-launcher@markusweberg'
 $manifestPath = Join-Path $PSScriptRoot "$hostName.json"
 $registryKey = "HKCU:\Software\Mozilla\NativeMessagingHosts\$hostName"
 

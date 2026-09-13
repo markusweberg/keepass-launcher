@@ -1,0 +1,15 @@
+{
+  "name": "keepass-launcher",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Firefox extension: unlock KeePass and open your sites in a private window, signed in",
+  "scripts": {
+    "lint": "web-ext lint",
+    "build": "web-ext build",
+    "sign": "web-ext sign",
+    "start": "web-ext run"
+  },
+  "devDependencies": {
+    "web-ext": "^10.6.0"
+  }
+}

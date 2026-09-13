@@ -1,0 +1,54 @@
+name: Release
+
+# Push a tag like v1.0.0 (matching "version" in extension/manifest.json) to sign
+# the extension as an unlisted add-on and publish a GitHub release.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      - name: Check tag matches manifest version
+        run: |
+          version=$(node -p "require('./extension/manifest.json').version")
+          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match manifest version $version"
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - run: npm run lint
+
+      - name: Sign with addons.mozilla.org (unlisted)
+        run: npm run sign
+        env:
+          WEB_EXT_API_KEY: ${{ secrets.AMO_JWT_ISSUER }}
+          WEB_EXT_API_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+
+      - name: Package native helper
+        run: |
+          mkdir -p dist/keepass-launcher-native-host
+          cp native-host/host.ps1 native-host/host.bat native-host/install.ps1 native-host/uninstall.ps1 dist/keepass-launcher-native-host/
+          (cd dist && zip -r "keepass-launcher-native-host-$VERSION.zip" keepass-launcher-native-host)
+
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            web-ext-artifacts/*.xpi \
+            "dist/keepass-launcher-native-host-$VERSION.zip" \
+            --title "KeePass Launcher $VERSION" \
+            --generate-notes

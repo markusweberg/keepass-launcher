@@ -35,9 +35,12 @@ Firefox native messaging reads the database file. It never sees the master passw
    Re-run it if you move this folder. `uninstall.ps1` removes it.
 
 2. **Load the extension**
-   - For development: open `about:debugging#/runtime/this-firefox` → *Load Temporary
+   - Release: download the `.xpi` from the latest
+     [GitHub release](https://github.com/markusweberg/keepass-launcher/releases) and open it
+     in Firefox (drag it into a window, or `about:addons` → gear → *Install Add-on From File…*).
+     The release also has a zip of the native helper if you don't have this repository.
+   - Development: open `about:debugging#/runtime/this-firefox` → *Load Temporary
      Add-on…* → pick `extension/manifest.json`. It is removed when Firefox restarts.
-   - For permanent use: sign it as an unlisted add-on (see below) and install the `.xpi`.
 
 3. **Allow private windows**: `about:addons` → KeePass Launcher → *Run in Private
    Windows* → Allow.
@@ -89,18 +92,40 @@ cleared too.
 Windows clipboard history (Win+V) and clipboard sync keep copies of everything copied,
 passwords included. Turn them off in *Settings → System → Clipboard* if you use this.
 
-## Signing for permanent install
+## Development
 
-Release Firefox only installs signed add-ons. Unlisted signing is free and the add-on
-is not published:
+```powershell
+npm install        # installs Mozilla's web-ext tool
+npm run lint       # validate the extension
+npm run build      # unsigned zip in web-ext-artifacts/
+```
+
+## Releasing
+
+Release Firefox only installs add-ons signed by Mozilla. This project uses **unlisted**
+signing: Mozilla signs the `.xpi`, but it is not published on addons.mozilla.org.
+
+One-time setup:
 
 1. Create API credentials at https://addons.mozilla.org/developers/addon/api/key/
-2. ```powershell
-   npx web-ext sign --source-dir extension --channel unlisted --api-key <JWT issuer> --api-secret <JWT secret>
-   ```
-3. Install the `.xpi` from `web-ext-artifacts/` by dragging it into Firefox.
+2. Add them as repository secrets (*Settings → Secrets and variables → Actions*):
+   `AMO_JWT_ISSUER` and `AMO_JWT_SECRET`.
 
-Bump `version` in `manifest.json` before each new signing.
+For each release:
+
+1. Bump `version` in `extension/manifest.json` (and `package.json`). Mozilla never signs
+   the same version twice.
+2. Commit, then tag and push:
+   ```powershell
+   git tag v1.0.0
+   git push origin v1.0.0
+   ```
+3. The *Release* workflow lints, signs, and creates a GitHub release with the `.xpi` and
+   the native helper zip.
+
+To sign locally instead: set `WEB_EXT_API_KEY` and `WEB_EXT_API_SECRET`, then `npm run sign`.
+
+Updates are manual: install the new `.xpi` over the old one. Settings are kept.
 
 ## Security notes
 
